@@ -3,10 +3,11 @@
   "scripts": {
     "build": "tsc --noEmit && vite build",
     "watch": "tsc --noEmit && vite build --watch",
-    "lint:ts": "eslint .",
-    "lint:prettier": "prettier --check .",
-    "lint": "pnpm lint:ts && pnpm lint:prettier",
-    "lintfix": "prettier --write ."
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
+    "prettier": "prettier --check .",
+    "prettier:fix": "prettier --write .",
+    "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
     "@figma/plugin-typings": "^1.50.0",
