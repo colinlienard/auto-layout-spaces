@@ -9,6 +9,7 @@ specifiers:
   eslint-config-airbnb-typescript: ^17.0.0
   eslint-config-prettier: ^8.5.0
   eslint-plugin-import: ^2.26.0
+  husky: ^8.0.1
   prettier: ^2.7.1
   typescript: ^4.7.4
   vite: ^3.0.8
@@ -23,6 +24,7 @@ devDependencies:
   eslint-config-airbnb-typescript: 17.0.0_ndwsrvi3totxze7jnjj3sukeeq
   eslint-config-prettier: 8.5.0_eslint@8.22.0
   eslint-plugin-import: 2.26.0_3bh5nkk7utn7e74vrwtv6rxmt4
+  husky: 8.0.1
   prettier: 2.7.1
   typescript: 4.7.4
   vite: 3.0.8
@@ -1573,6 +1575,15 @@ packages:
     engines: { node: '>= 0.4.0' }
     dependencies:
       function-bind: 1.1.1
+    dev: true
+
+  /husky/8.0.1:
+    resolution:
+      {
+        integrity: sha512-xs7/chUH/CKdOCs7Zy0Aev9e/dKOMZf3K1Az1nar3tzlv0jfqnYtu235bstsWTmXOR0EfINrPa97yy4Lz6RiKw==,
+      }
+    engines: { node: '>=14' }
+    hasBin: true
     dev: true
 
   /ignore/5.2.0:
