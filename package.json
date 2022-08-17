@@ -1,0 +1,13 @@
+{
+  "private": "true",
+  "scripts": {
+    "build": "tsc --noEmit && vite build",
+    "watch": "tsc --noEmit && vite build --watch"
+  },
+  "devDependencies": {
+    "@figma/plugin-typings": "^1.50.0",
+    "typescript": "^4.7.4",
+    "vite": "^3.0.8",
+    "vite-plugin-singlefile": "0.7.1"
+  }
+}

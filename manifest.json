@@ -1,0 +1,8 @@
+{
+  "name": "Auto-layout Spaces",
+  "id": "1141632283161323116",
+  "api": "1.0.0",
+  "main": "dist/code.js",
+  "ui": "dist/ui.html",
+  "editorType": ["figma"]
+}
