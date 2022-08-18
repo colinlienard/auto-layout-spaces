@@ -1,6 +1,9 @@
 import { rgba } from './helpers';
+import { UIMessage } from './types';
 
 figma.showUI(__html__);
+
+let GROUP_ID: string;
 
 // Create a frame with a text in it
 const createVisualSpace = (
@@ -36,7 +39,7 @@ const createVisualSpace = (
   return frame;
 };
 
-figma.ui.onmessage = async () => {
+const showVisualSpaces = async () => {
   // Load a font to display text
   await figma.loadFontAsync({ family: 'Inter', style: 'Regular' });
 
@@ -143,4 +146,24 @@ figma.ui.onmessage = async () => {
   group.expanded = false;
   group.locked = true;
   group.name = '< 👀 Auto-layout Spaces >';
+  GROUP_ID = group.id;
+};
+
+const hideVisualSpaces = () => {
+  const group = figma.currentPage.findChild((node) => node.id === GROUP_ID);
+  group?.remove();
+};
+
+// Handle events from the ui
+figma.ui.onmessage = async (message: UIMessage) => {
+  switch (message) {
+    case 'show':
+      showVisualSpaces();
+      break;
+    case 'hide':
+      hideVisualSpaces();
+      break;
+    default:
+      throw new Error(`Unknown message from ui: '${message}'`);
+  }
 };
