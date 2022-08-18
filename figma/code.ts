@@ -9,7 +9,8 @@ const createVisualSpace = (
   y: number,
   width: number,
   height: number,
-  space: number
+  space: number,
+  color: [number, number, number]
 ): FrameNode => {
   const frame = figma.createFrame();
   parent.appendChild(frame);
@@ -23,12 +24,13 @@ const createVisualSpace = (
   frame.primaryAxisAlignItems = 'CENTER';
   frame.counterAxisAlignItems = 'CENTER';
   frame.clipsContent = false;
-  frame.fills = rgba(1, 0, 0, 0.2);
+  frame.fills = rgba(...color, 0.2);
 
   // Create a text centered in the frame
   const text = figma.createText();
   text.characters = `${space}px`;
-  text.fills = rgba(1, 0, 0);
+  text.fills = rgba(...color);
+  text.strokes = rgba(1, 1, 1);
   frame.appendChild(text);
   frame.resize(width, height);
 
@@ -49,38 +51,84 @@ figma.ui.onmessage = async () => {
     const {
       width,
       height,
+      children,
+      itemSpacing,
       paddingBottom,
       paddingLeft,
       paddingRight,
       paddingTop,
     } = node;
 
+    if (children.length > 1) {
+      children.forEach((child, index) => {
+        // Do not add a visual space fot the last child
+        if (index === children.length - 1) {
+          return;
+        }
+
+        // Vertical spaces
+        if (node.layoutMode === 'VERTICAL') {
+          createVisualSpace(
+            node,
+            paddingLeft,
+            child.y + child.height,
+            width - paddingLeft - paddingRight,
+            itemSpacing,
+            itemSpacing,
+            [0, 0, 1]
+          );
+          return;
+        }
+
+        // Horizontal spaces
+        createVisualSpace(
+          node,
+          child.x + child.width,
+          paddingTop,
+          itemSpacing,
+          height - paddingTop - paddingBottom,
+          itemSpacing,
+          [0, 0, 1]
+        );
+      });
+    }
+
     // If there is a padding, create a visual space
     if (paddingTop) {
-      createVisualSpace(node, 0, 0, node.width, paddingTop, paddingTop);
+      createVisualSpace(node, 0, 0, width, paddingTop, paddingTop, [1, 0, 0]);
     }
     if (paddingRight) {
       createVisualSpace(
         node,
-        node.width - paddingRight,
+        width - paddingRight,
         0,
         paddingRight,
-        node.height,
-        paddingRight
+        height,
+        paddingRight,
+        [1, 0, 0]
       );
     }
     if (paddingBottom) {
       createVisualSpace(
         node,
         0,
-        node.height - paddingBottom,
-        node.width,
+        height - paddingBottom,
+        width,
         paddingBottom,
-        paddingBottom
+        paddingBottom,
+        [1, 0, 0]
       );
     }
     if (paddingLeft) {
-      createVisualSpace(node, 0, 0, paddingLeft, node.height, paddingLeft);
+      createVisualSpace(
+        node,
+        0,
+        0,
+        paddingLeft,
+        height,
+        paddingLeft,
+        [1, 0, 0]
+      );
     }
 
     // Resize the node with its previous size
