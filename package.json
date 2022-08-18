@@ -1,8 +1,8 @@
 {
   "private": "true",
   "scripts": {
-    "build": "tsc --noEmit && vite build",
-    "watch": "tsc --noEmit && vite build --watch",
+    "build": "vite build",
+    "watch": "vite build --watch",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "prettier": "prettier --check .",
