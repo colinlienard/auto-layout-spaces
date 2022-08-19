@@ -45,7 +45,9 @@ const showVisualSpaces = async () => {
 
   // Get all frames with auto-layouts
   const nodes = figma.currentPage.findAll(
-    (node) => node.type === 'FRAME' && node.layoutMode !== 'NONE'
+    (node) =>
+      (node.type === 'FRAME' || node.type === 'INSTANCE') &&
+      node.layoutMode !== 'NONE'
   ) as FrameNode[];
 
   // This array will store all of the visual spaces
