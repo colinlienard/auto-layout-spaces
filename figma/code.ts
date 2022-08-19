@@ -147,11 +147,17 @@ const showVisualSpaces = async () => {
   group.locked = true;
   group.name = '< 👀 Auto-layout Spaces >';
   GROUP_ID = group.id;
+
+  figma.notify('👀 Spaces showned!', { timeout: 1500 });
 };
 
 const hideVisualSpaces = () => {
   const group = figma.currentPage.findChild((node) => node.id === GROUP_ID);
-  group?.remove();
+  if (group) {
+    group.remove();
+
+    figma.notify('🙈 Spaces hidden!', { timeout: 1500 });
+  }
 };
 
 // Handle events from the ui
@@ -167,3 +173,7 @@ figma.ui.onmessage = async (message: UIMessage) => {
       throw new Error(`Unknown message from ui: '${message}'`);
   }
 };
+
+figma.on('close', () => {
+  hideVisualSpaces();
+});
