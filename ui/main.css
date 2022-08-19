@@ -1,12 +1,12 @@
 @import url('https://rsms.me/inter/inter.css');
 
-.figma-dark body .radio,
-.figma-dark body .input {
-  color-scheme: dark;
-}
-
 body * {
   all: unset;
+  box-sizing: border-box;
+}
+
+.figma-dark input {
+  color-scheme: dark;
 }
 
 .main {
@@ -37,6 +37,11 @@ body * {
 .button.disabled {
   background-color: var(--figma-color-bg-disabled);
   pointer-events: none;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
 }
 
 .input {
@@ -91,7 +96,61 @@ body * {
   appearance: auto;
 }
 
-.footer {
+.select-wrapper {
+  position: relative;
+}
+
+.select {
+  padding: 8px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  background-color: var(--figma-color-bg);
+  width: 100%;
+}
+
+.select:hover {
+  border-color: var(--figma-color-border);
+}
+
+.select:focus {
+  border-color: var(--figma-color-border-selected);
+}
+
+.select-arrow {
+  position: absolute;
+  inset: 0 0 0 calc(100% - 24px);
+  background-color: var(--figma-color-border);
+  pointer-events: none;
+  border-radius: 0 2px 2px 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.select-arrow::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  background-color: var(--figma-color-text);
+  clip-path: polygon(4px 0, 6px 0, 6px 6px, 0 6px, 0 4px, 4px 4px);
+  transform: rotate(45deg);
+}
+
+.select:hover ~ .select-arrow {
   display: flex;
-  justify-content: space-between;
+}
+
+.select:focus ~ .select-arrow {
+  display: flex;
+  background-color: var(--figma-color-border-selected);
+}
+
+.select:focus ~ .select-arrow::before {
+  background-color: white;
+}
+
+.separator {
+  width: 100%;
+  border: none;
+  border-top: 1px solid var(--figma-color-border);
 }

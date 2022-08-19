@@ -1,7 +1,7 @@
 import { rgba } from './helpers';
 import { UIMessage, Unit } from './types';
 
-figma.showUI(__html__, { width: 300, height: 300, themeColors: true });
+figma.showUI(__html__, { width: 300, height: 370, themeColors: true });
 
 let GROUP_ID: string;
 let UNIT: Unit = 'px';
