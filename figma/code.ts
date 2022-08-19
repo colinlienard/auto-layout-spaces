@@ -1,7 +1,7 @@
 import { rgba } from './helpers';
 import { UIMessage, Unit } from './types';
 
-figma.showUI(__html__, { width: 500, height: 500, themeColors: true });
+figma.showUI(__html__, { width: 300, height: 300, themeColors: true });
 
 let GROUP_ID: string;
 let UNIT: Unit = 'px';
@@ -41,8 +41,15 @@ const createVisualSpace = (
   // Create a text centered in the frame
   const text = figma.createText();
   text.characters = getValueInUnit(value);
-  text.fills = rgba(...color);
-  text.strokes = rgba(1, 1, 1);
+  let fontSize = value * 0.8;
+  if (fontSize > 32) {
+    fontSize = 32;
+  } else if (fontSize < 12) {
+    fontSize = 12;
+  }
+  text.fontSize = fontSize;
+  text.fills = rgba(1, 1, 1);
+  text.strokes = rgba(...color, 0.5);
   frame.appendChild(text);
 
   // Set the size after appending the text
