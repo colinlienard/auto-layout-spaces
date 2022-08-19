@@ -1,5 +1,9 @@
 @import url('https://rsms.me/inter/inter.css');
 
+.figma-dark body .radio {
+  color-scheme: dark;
+}
+
 body * {
   all: unset;
 }
@@ -51,8 +55,16 @@ body * {
   gap: 10px;
 }
 
+.label {
+  cursor: pointer;
+}
+
 .text-disabled {
   color: var(--figma-color-text-disabled);
+}
+
+.radio {
+  appearance: auto;
 }
 
 .footer {

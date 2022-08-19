@@ -1,9 +1,10 @@
 import { rgba } from './helpers';
-import { UIMessage } from './types';
+import { UIMessage, Unit } from './types';
 
 figma.showUI(__html__, { width: 500, height: 500, themeColors: true });
 
 let GROUP_ID: string;
+let UNIT: Unit = 'px';
 
 // Create a frame with a text in it
 const createVisualSpace = (
@@ -11,7 +12,7 @@ const createVisualSpace = (
   y: number,
   width: number,
   height: number,
-  unit: number,
+  value: number,
   color: [number, number, number]
 ): FrameNode => {
   const frame = figma.createFrame();
@@ -28,7 +29,16 @@ const createVisualSpace = (
 
   // Create a text centered in the frame
   const text = figma.createText();
-  text.characters = `${unit}px`;
+  switch (UNIT) {
+    case 'px':
+      text.characters = `${value}px`;
+      break;
+    case 'rem':
+      text.characters = `${value / 16}rem`;
+      break;
+    default:
+      throw new Error();
+  }
   text.fills = rgba(...color);
   text.strokes = rgba(1, 1, 1);
   frame.appendChild(text);
@@ -158,15 +168,18 @@ const hideVisualSpaces = () => {
 
 // Handle events from the ui
 figma.ui.onmessage = async (message: UIMessage) => {
-  switch (message) {
+  switch (message.type) {
     case 'show':
       showVisualSpaces();
       break;
     case 'hide':
       hideVisualSpaces();
       break;
+    case 'unit':
+      UNIT = message.value as Unit;
+      break;
     default:
-      throw new Error(`Unknown message from ui: '${message}'`);
+      throw new Error();
   }
 };
 
