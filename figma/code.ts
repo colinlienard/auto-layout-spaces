@@ -1,7 +1,7 @@
 import { rgba } from './helpers';
 import { UIMessage } from './types';
 
-figma.showUI(__html__);
+figma.showUI(__html__, { width: 500, height: 500, themeColors: true });
 
 let GROUP_ID: string;
 
@@ -147,17 +147,11 @@ const showVisualSpaces = async () => {
   group.locked = true;
   group.name = '< 👀 Auto-layout Spaces >';
   GROUP_ID = group.id;
-
-  figma.notify('👀 Spaces showned!', { timeout: 1500 });
 };
 
 const hideVisualSpaces = () => {
   const group = figma.currentPage.findChild((node) => node.id === GROUP_ID);
-  if (group) {
-    group.remove();
-
-    figma.notify('🙈 Spaces hidden!', { timeout: 1500 });
-  }
+  group?.remove();
 };
 
 // Handle events from the ui

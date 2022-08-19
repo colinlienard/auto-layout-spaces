@@ -1,3 +1,61 @@
-h2 {
-  color: red;
+@import url('https://rsms.me/inter/inter.css');
+
+body * {
+  all: unset;
+}
+
+.main {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  line-height: 16px;
+  color: var(--figma-color-text);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px;
+}
+
+.link {
+  color: var(--figma-color-text-brand);
+  cursor: pointer;
+}
+
+.button {
+  padding: 0.75em 1em;
+  background-color: var(--figma-color-bg-brand);
+  border-radius: 6px;
+  font-weight: 500;
+  color: white;
+  cursor: pointer;
+  border: 2px solid transparent;
+}
+
+.button:active {
+  border-color: var(--figma-color-border-brand-strong);
+}
+
+.button.disabled {
+  background-color: var(--figma-color-bg-disabled);
+  pointer-events: none;
+}
+
+.heading {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+}
+
+.horizontal-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.text-disabled {
+  color: var(--figma-color-text-disabled);
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
 }
