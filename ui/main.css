@@ -1,6 +1,7 @@
 @import url('https://rsms.me/inter/inter.css');
 
-.figma-dark body .radio {
+.figma-dark body .radio,
+.figma-dark body .input {
   color-scheme: dark;
 }
 
@@ -17,11 +18,6 @@ body * {
   flex-direction: column;
   gap: 10px;
   padding: 16px;
-}
-
-.link {
-  color: var(--figma-color-text-brand);
-  cursor: pointer;
 }
 
 .button {
@@ -43,6 +39,29 @@ body * {
   pointer-events: none;
 }
 
+.input {
+  padding: 8px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  margin-left: 22px;
+}
+
+.input::placeholder {
+  color: var(--figma-color-text-disabled);
+}
+
+.input:hover {
+  border-color: var(--figma-color-border);
+}
+
+.input:focus {
+  border-color: var(--figma-color-border-selected);
+}
+
+.input.hidden {
+  display: none;
+}
+
 .heading {
   font-size: 16px;
   font-weight: 700;
@@ -56,6 +75,11 @@ body * {
 }
 
 .label {
+  cursor: pointer;
+}
+
+.link {
+  color: var(--figma-color-text-brand);
   cursor: pointer;
 }
 

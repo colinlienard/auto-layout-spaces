@@ -6,6 +6,17 @@ figma.showUI(__html__, { width: 500, height: 500, themeColors: true });
 let GROUP_ID: string;
 let UNIT: Unit = 'px';
 
+const getValueInUnit = (value: number): string => {
+  switch (UNIT) {
+    case 'px':
+      return `${value}px`;
+    case 'rem':
+      return `${value / 16}rem`;
+    default:
+      return `${value / UNIT}`;
+  }
+};
+
 // Create a frame with a text in it
 const createVisualSpace = (
   x: number,
@@ -29,16 +40,7 @@ const createVisualSpace = (
 
   // Create a text centered in the frame
   const text = figma.createText();
-  switch (UNIT) {
-    case 'px':
-      text.characters = `${value}px`;
-      break;
-    case 'rem':
-      text.characters = `${value / 16}rem`;
-      break;
-    default:
-      throw new Error();
-  }
+  text.characters = getValueInUnit(value);
   text.fills = rgba(...color);
   text.strokes = rgba(1, 1, 1);
   frame.appendChild(text);

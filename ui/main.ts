@@ -22,6 +22,17 @@ hideButton.addEventListener('click', () => {
 const radios = document.querySelectorAll(
   '.radio'
 ) as NodeListOf<HTMLInputElement>;
+const customRatioInput = document.querySelector(
+  '#custom-ratio-input'
+) as HTMLInputElement;
+
+const postCustomRatio = () => {
+  postMessage({
+    type: 'unit',
+    value: parseInt(customRatioInput.value, 10),
+  });
+};
+
 radios.forEach((radio) => {
   radio.addEventListener('change', () => {
     radios.forEach((r) => {
@@ -33,11 +44,22 @@ radios.forEach((radio) => {
       case 'px':
       case 'rem':
         postMessage({ type: 'unit', value: radio.id });
+        if (!customRatioInput.classList.contains('hidden')) {
+          customRatioInput.classList.add('hidden');
+        }
         break;
       case 'custom':
+        postCustomRatio();
+        if (customRatioInput.classList.contains('hidden')) {
+          customRatioInput.classList.remove('hidden');
+        }
         break;
       default:
         throw new Error();
     }
   });
+});
+
+customRatioInput.addEventListener('change', () => {
+  postCustomRatio();
 });
