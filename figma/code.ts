@@ -1,6 +1,9 @@
 import { rgba } from './helpers';
+import { UIMessage } from './types';
 
-figma.showUI(__html__);
+figma.showUI(__html__, { width: 500, height: 500, themeColors: true });
+
+let GROUP_ID: string;
 
 // Create a frame with a text in it
 const createVisualSpace = (
@@ -36,7 +39,7 @@ const createVisualSpace = (
   return frame;
 };
 
-figma.ui.onmessage = async () => {
+const showVisualSpaces = async () => {
   // Load a font to display text
   await figma.loadFontAsync({ family: 'Inter', style: 'Regular' });
 
@@ -45,11 +48,13 @@ figma.ui.onmessage = async () => {
     (node) => node.type === 'FRAME' && node.layoutMode !== 'NONE'
   ) as FrameNode[];
 
+  // This array will store all of the visual spaces
+  const allVisualSpaces: FrameNode[] = [];
+
   // For each node, create visual space for each padding
   nodes.forEach((node) => {
     const {
-      x,
-      y,
+      absoluteTransform,
       width,
       height,
       children,
@@ -59,14 +64,14 @@ figma.ui.onmessage = async () => {
       paddingRight,
       paddingTop,
     } = node;
-
-    const allVisualSpaces: FrameNode[] = [];
+    const x = absoluteTransform[0][2];
+    const y = absoluteTransform[1][2];
 
     // Create visual spaces for each space between children
     if (children.length > 1) {
       children.forEach((child, index) => {
         // Do not add a visual space fot the last child
-        if (index === children.length - 1) {
+        if (index === children.length - 1 || itemSpacing < 0) {
           return;
         }
 
@@ -134,11 +139,35 @@ figma.ui.onmessage = async () => {
         createVisualSpace(x, y, paddingLeft, height, paddingLeft, [1, 0, 0])
       );
     }
-
-    // Put all visual spaces in a group
-    const group = figma.group(allVisualSpaces, figma.currentPage);
-    group.expanded = false;
-    group.locked = true;
-    group.name = '< 👀 Auto-layout Spaces >';
   });
+
+  // Put all visual spaces in a group
+  const group = figma.group(allVisualSpaces, figma.currentPage);
+  group.expanded = false;
+  group.locked = true;
+  group.name = '< 👀 Auto-layout Spaces >';
+  GROUP_ID = group.id;
 };
+
+const hideVisualSpaces = () => {
+  const group = figma.currentPage.findChild((node) => node.id === GROUP_ID);
+  group?.remove();
+};
+
+// Handle events from the ui
+figma.ui.onmessage = async (message: UIMessage) => {
+  switch (message) {
+    case 'show':
+      showVisualSpaces();
+      break;
+    case 'hide':
+      hideVisualSpaces();
+      break;
+    default:
+      throw new Error(`Unknown message from ui: '${message}'`);
+  }
+};
+
+figma.on('close', () => {
+  hideVisualSpaces();
+});
