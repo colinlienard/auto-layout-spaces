@@ -6,3 +6,5 @@ export type UIMessage = {
   type: 'show' | 'hide' | 'unit' | 'spacings';
   value?: Unit | number | Spacings;
 };
+
+export type Color = [number, number, number];
