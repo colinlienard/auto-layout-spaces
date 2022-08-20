@@ -1,11 +1,12 @@
-import { UIMessage } from '../figma/types';
-
-const showButton = document.querySelector('#show') as HTMLButtonElement;
-const hideButton = document.querySelector('#hide') as HTMLButtonElement;
+import { Spacings, UIMessage } from '../figma/types';
 
 const postMessage = (message: UIMessage) => {
   parent.postMessage({ pluginMessage: message }, '*');
 };
+
+// Run buttons
+const showButton = document.querySelector('#show') as HTMLButtonElement;
+const hideButton = document.querySelector('#hide') as HTMLButtonElement;
 
 showButton.addEventListener('click', () => {
   postMessage({ type: 'show' });
@@ -19,6 +20,7 @@ hideButton.addEventListener('click', () => {
   showButton.classList.remove('disabled');
 });
 
+// Radio buttons
 const radios = document.querySelectorAll(
   '.radio'
 ) as NodeListOf<HTMLInputElement>;
@@ -62,4 +64,10 @@ radios.forEach((radio) => {
 
 customRatioInput.addEventListener('change', () => {
   postCustomRatio();
+});
+
+// Select spacings
+const select = document.querySelector('#select-spacings') as HTMLSelectElement;
+select.addEventListener('change', () => {
+  postMessage({ type: 'spacings', value: select.value as Spacings });
 });

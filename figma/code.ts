@@ -1,10 +1,11 @@
 import { rgba } from './helpers';
-import { UIMessage, Unit } from './types';
+import { Spacings, UIMessage, Unit } from './types';
 
-figma.showUI(__html__, { width: 300, height: 370, themeColors: true });
+figma.showUI(__html__, { width: 300, height: 410, themeColors: true });
 
 let GROUP_ID: string;
 let UNIT: Unit = 'px';
+let SPACINGS: Spacings = 'all';
 
 const getValueInUnit = (value: number): string => {
   switch (UNIT) {
@@ -89,7 +90,7 @@ const showVisualSpaces = async () => {
     const y = absoluteTransform[1][2];
 
     // Create visual spaces for each space between children
-    if (children.length > 1) {
+    if (SPACINGS !== 'paddings' && children.length > 1) {
       children.forEach((child, index) => {
         // Do not add a visual space fot the last child
         if (index === children.length - 1 || itemSpacing < 0) {
@@ -123,6 +124,10 @@ const showVisualSpaces = async () => {
           )
         );
       });
+    }
+
+    if (SPACINGS === 'spacing-between-items') {
+      return;
     }
 
     // Create visual spaces for paddings
@@ -162,6 +167,12 @@ const showVisualSpaces = async () => {
     }
   });
 
+  // Notify that no spacings can be showned
+  if (allVisualSpaces.length === 0) {
+    figma.notify('No space to display.');
+    return;
+  }
+
   // Put all visual spaces in a group
   const group = figma.group(allVisualSpaces, figma.currentPage);
   group.expanded = false;
@@ -186,6 +197,9 @@ figma.ui.onmessage = async (message: UIMessage) => {
       break;
     case 'unit':
       UNIT = message.value as Unit;
+      break;
+    case 'spacings':
+      SPACINGS = message.value as Spacings;
       break;
     default:
       throw new Error();
