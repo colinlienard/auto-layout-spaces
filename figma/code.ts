@@ -1,9 +1,22 @@
 import { rgba } from './helpers';
-import { UIMessage } from './types';
+import { Spacings, UIMessage, Unit } from './types';
 
-figma.showUI(__html__, { width: 500, height: 500, themeColors: true });
+figma.showUI(__html__, { width: 300, height: 410, themeColors: true });
 
 let GROUP_ID: string;
+let UNIT: Unit = 'px';
+let SPACINGS: Spacings = 'all';
+
+const getValueInUnit = (value: number): string => {
+  switch (UNIT) {
+    case 'px':
+      return `${value}px`;
+    case 'rem':
+      return `${value / 16}rem`;
+    default:
+      return `${value / UNIT}`;
+  }
+};
 
 // Create a frame with a text in it
 const createVisualSpace = (
@@ -11,7 +24,7 @@ const createVisualSpace = (
   y: number,
   width: number,
   height: number,
-  unit: number,
+  value: number,
   color: [number, number, number]
 ): FrameNode => {
   const frame = figma.createFrame();
@@ -28,9 +41,16 @@ const createVisualSpace = (
 
   // Create a text centered in the frame
   const text = figma.createText();
-  text.characters = `${unit}px`;
-  text.fills = rgba(...color);
-  text.strokes = rgba(1, 1, 1);
+  text.characters = getValueInUnit(value);
+  let fontSize = value * 0.8;
+  if (fontSize > 32) {
+    fontSize = 32;
+  } else if (fontSize < 12) {
+    fontSize = 12;
+  }
+  text.fontSize = fontSize;
+  text.fills = rgba(1, 1, 1);
+  text.strokes = rgba(...color, 0.5);
   frame.appendChild(text);
 
   // Set the size after appending the text
@@ -45,7 +65,9 @@ const showVisualSpaces = async () => {
 
   // Get all frames with auto-layouts
   const nodes = figma.currentPage.findAll(
-    (node) => node.type === 'FRAME' && node.layoutMode !== 'NONE'
+    (node) =>
+      (node.type === 'FRAME' || node.type === 'INSTANCE') &&
+      node.layoutMode !== 'NONE'
   ) as FrameNode[];
 
   // This array will store all of the visual spaces
@@ -68,7 +90,7 @@ const showVisualSpaces = async () => {
     const y = absoluteTransform[1][2];
 
     // Create visual spaces for each space between children
-    if (children.length > 1) {
+    if (SPACINGS !== 'paddings' && children.length > 1) {
       children.forEach((child, index) => {
         // Do not add a visual space fot the last child
         if (index === children.length - 1 || itemSpacing < 0) {
@@ -102,6 +124,10 @@ const showVisualSpaces = async () => {
           )
         );
       });
+    }
+
+    if (SPACINGS === 'spacing-between-items') {
+      return;
     }
 
     // Create visual spaces for paddings
@@ -141,6 +167,12 @@ const showVisualSpaces = async () => {
     }
   });
 
+  // Notify that no spacings can be showned
+  if (allVisualSpaces.length === 0) {
+    figma.notify('No space to display.');
+    return;
+  }
+
   // Put all visual spaces in a group
   const group = figma.group(allVisualSpaces, figma.currentPage);
   group.expanded = false;
@@ -156,15 +188,21 @@ const hideVisualSpaces = () => {
 
 // Handle events from the ui
 figma.ui.onmessage = async (message: UIMessage) => {
-  switch (message) {
+  switch (message.type) {
     case 'show':
       showVisualSpaces();
       break;
     case 'hide':
       hideVisualSpaces();
       break;
+    case 'unit':
+      UNIT = message.value as Unit;
+      break;
+    case 'spacings':
+      SPACINGS = message.value as Spacings;
+      break;
     default:
-      throw new Error(`Unknown message from ui: '${message}'`);
+      throw new Error();
   }
 };
 

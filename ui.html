@@ -2,13 +2,46 @@
 <script src="./ui/main.ts" type="module"></script>
 
 <main class="main">
+  <h2 class="heading">Options</h2>
+  <label class="label horizontal-wrapper" for="px">
+    <input class="radio" type="radio" id="px" checked />
+    <p>px</p>
+  </label>
+  <label class="label horizontal-wrapper" for="rem">
+    <input class="radio" type="radio" id="rem" />
+    <p>rem (16px)</p>
+  </label>
+  <label class="label horizontal-wrapper" for="custom">
+    <input class="radio" type="radio" id="custom" />
+    <p>Custom pixel ratio</p>
+  </label>
+  <input
+    class="input hidden"
+    id="custom-ratio-input"
+    type="number"
+    placeholder="Pixel ratio"
+  />
+  <span></span>
+  <div class="select-wrapper">
+    <select class="select" id="select-spacings">
+      <option value="all" selected>Show all spaces</option>
+      <option value="spacing-between-items">
+        Show only spacing between items
+      </option>
+      <option value="paddings">Show only paddings</option>
+    </select>
+    <div class="select-arrow"></div>
+  </div>
+  <span></span>
+  <hr class="separator" />
+  <span></span>
   <h2 class="heading">Run</h2>
   <div class="horizontal-wrapper">
     <button class="button" id="show">Show spaces</button>
     <button class="button disabled" id="hide">Hide spaces</button>
   </div>
   <p class="text-disabled">
-    All the visual spaces will be created in a group at the root of your page.
+    All visual spaces will be created in a group at the root of your page.
   </p>
   <span></span>
   <footer class="footer">
@@ -17,7 +50,8 @@
       href="https://github.com/ColinLienard/auto-layout-spaces/issues"
       target="_blank"
       class="link"
-      >Open an issue on GitHub</a
     >
+      Open an issue on GitHub
+    </a>
   </footer>
 </main>
