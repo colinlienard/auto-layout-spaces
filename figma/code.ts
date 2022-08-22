@@ -37,7 +37,7 @@ const createVisualSpace = (
   frame.primaryAxisAlignItems = 'CENTER';
   frame.counterAxisAlignItems = 'CENTER';
   frame.clipsContent = false;
-  frame.fills = rgba(...color, 0.2);
+  frame.fills = rgba(...color, 0.25);
   frame.expanded = false;
 
   // Create a text centered in the frame
@@ -51,7 +51,7 @@ const createVisualSpace = (
   }
   text.fontSize = fontSize;
   text.fills = rgba(1, 1, 1);
-  text.strokes = rgba(...color, 0.5);
+  text.strokes = rgba(0, 0, 0, 0.5);
   frame.appendChild(text);
 
   // Set the size after appending the text
@@ -203,6 +203,7 @@ figma.ui.onmessage = async (message: UIMessage) => {
   }
 };
 
+// Hide visual spaces when closing the plugin
 figma.on('close', () => {
   hideVisualSpaces();
 });

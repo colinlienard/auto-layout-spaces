@@ -20,29 +20,21 @@ export const rgba = (
 const arraysAreEqual = (a: number[], b: number[]) =>
   a.every((value, index) => value === b[index]);
 
-const valueColors: Map<number, Color> = new Map();
+// Generate a random number between 0, 0.25, 0.5, 0.75 and 1
+const random = () => Math.round(Math.random() * 4) / 4;
 
-const random = () => {
-  const r = Math.random();
-  if (r < 0.33) {
-    return 0;
-  }
-  if (r < 0.66) {
-    return 0.5;
-  }
-  return 1;
-};
+const valueColors: Map<number, Color> = new Map();
 
 export const getRandomColor = (value: number): Color => {
   // If the value is already associated to a color
-  if (valueColors.get(value)) {
+  if (valueColors.has(value)) {
     return valueColors.get(value) as Color;
   }
 
   const color = [random(), random(), random()] as Color;
 
-  // If the color is black or white, retry
-  if (arraysAreEqual(color, [1, 1, 1]) || arraysAreEqual(color, [0, 0, 0])) {
+  // If the color is black or white or grey, retry
+  if (color[0] === color[1] && color[0] === color[2]) {
     return getRandomColor(value);
   }
 
