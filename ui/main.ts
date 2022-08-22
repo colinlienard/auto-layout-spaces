@@ -10,12 +10,14 @@ const hideButton = document.querySelector('#hide') as HTMLButtonElement;
 
 showButton.addEventListener('click', () => {
   postMessage({ type: 'show' });
+  showButton.blur();
   showButton.classList.add('disabled');
   hideButton.classList.remove('disabled');
 });
 
 hideButton.addEventListener('click', () => {
   postMessage({ type: 'hide' });
+  hideButton.blur();
   hideButton.classList.add('disabled');
   showButton.classList.remove('disabled');
 });

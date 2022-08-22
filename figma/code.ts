@@ -1,4 +1,4 @@
-import { rgba } from './helpers';
+import { getRandomColor, rgba } from './helpers';
 import { Spacings, UIMessage, Unit } from './types';
 
 figma.showUI(__html__, { width: 300, height: 410, themeColors: true });
@@ -24,10 +24,11 @@ const createVisualSpace = (
   y: number,
   width: number,
   height: number,
-  value: number,
-  color: [number, number, number]
+  value: number
 ): FrameNode => {
   const frame = figma.createFrame();
+
+  const color = getRandomColor(value);
 
   // Set parameters
   frame.x = x;
@@ -36,7 +37,7 @@ const createVisualSpace = (
   frame.primaryAxisAlignItems = 'CENTER';
   frame.counterAxisAlignItems = 'CENTER';
   frame.clipsContent = false;
-  frame.fills = rgba(...color, 0.2);
+  frame.fills = rgba(...color, 0.25);
   frame.expanded = false;
 
   // Create a text centered in the frame
@@ -50,7 +51,7 @@ const createVisualSpace = (
   }
   text.fontSize = fontSize;
   text.fills = rgba(1, 1, 1);
-  text.strokes = rgba(...color, 0.5);
+  text.strokes = rgba(0, 0, 0, 0.5);
   frame.appendChild(text);
 
   // Set the size after appending the text
@@ -105,8 +106,7 @@ const showVisualSpaces = async () => {
               y + child.y + child.height,
               width - paddingLeft - paddingRight,
               itemSpacing,
-              itemSpacing,
-              [0, 0, 1]
+              itemSpacing
             )
           );
           return;
@@ -119,8 +119,7 @@ const showVisualSpaces = async () => {
             y + paddingTop,
             itemSpacing,
             height - paddingTop - paddingBottom,
-            itemSpacing,
-            [0, 0, 1]
+            itemSpacing
           )
         );
       });
@@ -133,7 +132,7 @@ const showVisualSpaces = async () => {
     // Create visual spaces for paddings
     if (paddingTop) {
       allVisualSpaces.push(
-        createVisualSpace(x, y, width, paddingTop, paddingTop, [1, 0, 0])
+        createVisualSpace(x, y, width, paddingTop, paddingTop)
       );
     }
     if (paddingRight) {
@@ -143,8 +142,7 @@ const showVisualSpaces = async () => {
           y,
           paddingRight,
           height,
-          paddingRight,
-          [1, 0, 0]
+          paddingRight
         )
       );
     }
@@ -155,14 +153,13 @@ const showVisualSpaces = async () => {
           y + height - paddingBottom,
           width,
           paddingBottom,
-          paddingBottom,
-          [1, 0, 0]
+          paddingBottom
         )
       );
     }
     if (paddingLeft) {
       allVisualSpaces.push(
-        createVisualSpace(x, y, paddingLeft, height, paddingLeft, [1, 0, 0])
+        createVisualSpace(x, y, paddingLeft, height, paddingLeft)
       );
     }
   });
@@ -206,6 +203,7 @@ figma.ui.onmessage = async (message: UIMessage) => {
   }
 };
 
+// Hide visual spaces when closing the plugin
 figma.on('close', () => {
   hideVisualSpaces();
 });
