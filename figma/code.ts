@@ -68,7 +68,8 @@ const showVisualSpaces = async () => {
   const nodes = figma.currentPage.findAll(
     (node) =>
       (node.type === 'FRAME' || node.type === 'INSTANCE') &&
-      node.layoutMode !== 'NONE'
+      node.layoutMode !== 'NONE' &&
+      node.visible
   ) as FrameNode[];
 
   // This array will store all of the visual spaces
