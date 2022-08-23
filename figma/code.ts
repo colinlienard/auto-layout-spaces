@@ -68,7 +68,8 @@ const showVisualSpaces = async () => {
   const nodes = figma.currentPage.findAll(
     (node) =>
       (node.type === 'FRAME' || node.type === 'INSTANCE') &&
-      node.layoutMode !== 'NONE'
+      node.layoutMode !== 'NONE' &&
+      node.visible
   ) as FrameNode[];
 
   // This array will store all of the visual spaces
@@ -93,8 +94,8 @@ const showVisualSpaces = async () => {
     // Create visual spaces for each space between children
     if (SPACINGS !== 'paddings' && children.length > 1) {
       children.forEach((child, index) => {
-        // Do not add a visual space fot the last child
-        if (index === children.length - 1 || itemSpacing < 0) {
+        // Do not add a visual space for the last child
+        if (index === children.length - 1 || itemSpacing <= 0) {
           return;
         }
 
