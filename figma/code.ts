@@ -93,8 +93,8 @@ const showVisualSpaces = async () => {
     // Create visual spaces for each space between children
     if (SPACINGS !== 'paddings' && children.length > 1) {
       children.forEach((child, index) => {
-        // Do not add a visual space fot the last child
-        if (index === children.length - 1 || itemSpacing < 0) {
+        // Do not add a visual space for the last child
+        if (index === children.length - 1 || itemSpacing <= 0) {
           return;
         }
 
