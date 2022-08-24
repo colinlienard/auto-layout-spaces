@@ -2,7 +2,7 @@
 
 <div align="center">
 
-# Auto-layout spaces
+# Auto-layout Spaces
 
 👀 View all spacing at once in auto-layouts.
 
@@ -24,7 +24,7 @@ Show all spaces in auto-layouts at once, so that developers integrating the desi
 - Choose different units for the value of spaces (`px`, `rem` or a custom pixel ratio).
 - Spaces are shown with different colors, each color corresponding to a specific value.
 
-## Run locally
+## Running locally
 
 After cloning the repo, install the dependencies via [pnpm](https://pnpm.io/):
 
@@ -50,4 +50,4 @@ Now, you can run the plugin and do your changes.
 
 ## License
 
-[MIT](./LICENSE)
+[MIT](./LICENSE) © Colin Lienard
