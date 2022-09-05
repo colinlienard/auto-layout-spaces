@@ -73,3 +73,9 @@ const select = document.querySelector('#select-spacings') as HTMLSelectElement;
 select.addEventListener('change', () => {
   postMessage({ type: 'spacings', value: select.value as Spacings });
 });
+
+// Hide or not when closing the plugin
+const checkbox = document.querySelector('#hide-on-exit') as HTMLInputElement;
+checkbox.addEventListener('change', () => {
+  postMessage({ type: 'hide-on-exit', value: checkbox.checked });
+});
