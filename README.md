@@ -22,6 +22,7 @@ Show all spaces in auto-layouts at once, so that developers integrating the desi
 - Hide them.
 - Show only spacing between items, or only paddings.
 - Choose different units for the value of spaces (`px`, `rem` or a custom pixel ratio).
+- Choose to keep or not spaces after closing the plugin.
 - Spaces are shown with different colors, each color corresponding to a specific value.
 
 ## Running locally

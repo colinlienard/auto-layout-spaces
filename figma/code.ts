@@ -3,9 +3,11 @@ import { Spacings, UIMessage, Unit } from './types';
 
 figma.showUI(__html__, { width: 300, height: 410, themeColors: true });
 
+const layerName = '< 👀 Auto-layout Spaces >';
 let GROUP_ID: string;
 let UNIT: Unit = 'px';
 let SPACINGS: Spacings = 'all';
+let HIDE_ON_EXIT = true;
 
 const getValueInUnit = (value: number): string => {
   switch (UNIT) {
@@ -175,7 +177,7 @@ const showVisualSpaces = async () => {
   const group = figma.group(allVisualSpaces, figma.currentPage);
   group.expanded = false;
   group.locked = true;
-  group.name = '< 👀 Auto-layout Spaces >';
+  group.name = layerName;
   GROUP_ID = group.id;
 };
 
@@ -199,6 +201,9 @@ figma.ui.onmessage = async (message: UIMessage) => {
     case 'spacings':
       SPACINGS = message.value as Spacings;
       break;
+    case 'hide-on-exit':
+      HIDE_ON_EXIT = message.value as boolean;
+      break;
     default:
       throw new Error();
   }
@@ -206,5 +211,12 @@ figma.ui.onmessage = async (message: UIMessage) => {
 
 // Hide visual spaces when closing the plugin
 figma.on('close', () => {
-  hideVisualSpaces();
+  if (HIDE_ON_EXIT) {
+    hideVisualSpaces();
+  }
 });
+
+// Delete already existing visual spaces
+figma.currentPage
+  .findChildren((node) => node.name === layerName)
+  .forEach((node) => node.remove());
